@@ -59,6 +59,16 @@ Key technical decisions:
 
 ## Future Improvements
 
+### Major Improvements
+
+- **API authentication**: Add authentication and authorization for secure API access
 - **Cloud storage**: Store raster data in S3 for scalable, distributed access
 - **STAC integration**: Create a SpatioTemporal Asset Catalog (STAC) and use STAC API to identify relevant raster tiles
 - **Virtual datasets**: Add support for GDAL Virtual Raster Tables (VRTs) to efficiently handle large, multi-file datasets
+
+### Minor Improvements
+
+- **Specify units**: Include units in API responses (e.g., `"soc_stock": 67.8, "units": "t C/ha"`)
+- **Improve testing**:
+  - Use a raster with known min, max, and mean values for more reliable regression tests
+  - Test with multiple files in the dataset directory to ensure proper aggregation
