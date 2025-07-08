@@ -4,6 +4,7 @@ import numpy as np
 
 from analysis import get_statistics, get_value_at_coordinates
 from exceptions import OutOfBoundsError
+from schemas import SocStockResponse, StatsResponse
 from settings import NODATA
 
 app = FastAPI(
@@ -13,7 +14,7 @@ app = FastAPI(
 )
 
 
-@app.get("/soc-stock")
+@app.get("/soc-stock", response_model=SocStockResponse)
 async def get_soc_stock(
     lat: Annotated[
         float, Query(ge=-90, le=90, description="Latitude coordinate (WGS84)")
@@ -31,7 +32,7 @@ async def get_soc_stock(
                 status_code=400, detail="No data available at this location"
             )
 
-        return {"soc_stock": soc_value}
+        return SocStockResponse(soc_stock=soc_value)
     except OutOfBoundsError:
         raise HTTPException(
             status_code=400, detail="Coordinates are outside the data coverage area"
@@ -40,15 +41,15 @@ async def get_soc_stock(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@app.get("/stats")
+@app.get("/stats", response_model=StatsResponse)
 async def get_stats():
     """Get SOC summary statistics for the entire SOC Stock dataset."""
     try:
         stats = get_statistics()
-        return {
-            "min_soc": stats.min_value,
-            "max_soc": stats.max_value,
-            "mean_soc": stats.mean_value,
-        }
+        return StatsResponse(
+            min_soc=stats.min_value,
+            max_soc=stats.max_value,
+            mean_soc=stats.mean_value,
+        )
     except Exception:
         raise HTTPException(status_code=500, detail="Internal server error")
