@@ -29,6 +29,12 @@ class TestSocStock:
         """Test that the endpoint returns SOC stock value for coordinates on the edge of the bounds."""
         response = client.get("/soc-stock?lat=41.930530&lon=-97.940439")
 
+        # If this fails, the edge coordinates may not have valid data
+        # or the bounds checking might be too strict
+        if response.status_code != 200:
+            data = response.json()
+            print(f"Edge coordinate test failed with: {data}")
+
         assert response.status_code == 200
         data = response.json()
         assert "soc_stock" in data
@@ -40,7 +46,8 @@ class TestSocStock:
         response = client.get("/soc-stock?lat=37.7749&lon=-122.4194")
         assert response.status_code == 400
         data = response.json()
-        assert "error" in data
+        assert "detail" in data
+        assert data["detail"] == "Coordinates are outside the data coverage area"
 
     def test_soc_invalid_latitude_high(self):
         """Test that latitude > 90 returns 422."""
