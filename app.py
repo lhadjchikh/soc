@@ -6,15 +6,23 @@ from analysis import get_statistics, get_value_at_coordinates
 from exceptions import OutOfBoundsError
 from settings import NODATA
 
-app = FastAPI()
+app = FastAPI(
+    title="SOC API",
+    description="API for querying Soil Organic Carbon raster data.",
+    version="1.0.0",
+)
 
 
 @app.get("/soc-stock")
 async def get_soc_stock(
-    lat: Annotated[float, Query(ge=-90, le=90, description="Latitude coordinate")],
-    lon: Annotated[float, Query(ge=-180, le=180, description="Longitude coordinate")],
+    lat: Annotated[
+        float, Query(ge=-90, le=90, description="Latitude coordinate (WGS84)")
+    ],
+    lon: Annotated[
+        float, Query(ge=-180, le=180, description="Longitude coordinate (WGS84)")
+    ],
 ):
-    """Get SOC stock value at given coordinates."""
+    """Get SOC stock value at given WGS84 coordinates."""
     try:
         soc_value = get_value_at_coordinates(lon, lat, "data/nebraska_30m_soc.tif")
 
