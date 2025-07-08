@@ -1,10 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from typing import Annotated
 
 app = FastAPI()
 
 
 @app.get("/soc-stock")
-async def get_soc_stock():
+async def get_soc_stock(
+    lat: Annotated[float, Query(ge=-90, le=90, description="Latitude coordinate")],
+    lon: Annotated[float, Query(ge=-180, le=180, description="Longitude coordinate")],
+):
     """Get SOC stock value at given coordinates."""
     pass
 

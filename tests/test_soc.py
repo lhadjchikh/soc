@@ -43,24 +43,24 @@ class TestSocStock:
         assert "error" in data
 
     def test_soc_invalid_latitude_high(self):
-        """Test that latitude > 90 returns 400."""
+        """Test that latitude > 90 returns 422."""
         response = client.get("/soc-stock?lat=91.0&lon=-97.896377")
-        assert response.status_code == 400
+        assert response.status_code == 422
 
     def test_soc_invalid_latitude_low(self):
-        """Test that latitude < -90 returns 400."""
+        """Test that latitude < -90 returns 422."""
         response = client.get("/soc-stock?lat=-91.0&lon=-97.896377")
-        assert response.status_code == 400
+        assert response.status_code == 422
 
     def test_soc_invalid_longitude_high(self):
-        """Test that longitude > 180 returns 400."""
+        """Test that longitude > 180 returns 422."""
         response = client.get("/soc-stock?lat=41.959795&lon=181.0")
-        assert response.status_code == 400
+        assert response.status_code == 422
 
     def test_soc_invalid_longitude_low(self):
-        """Test that longitude < -180 returns 400."""
+        """Test that longitude < -180 returns 422."""
         response = client.get("/soc-stock?lat=41.959795&lon=-181.0")
-        assert response.status_code == 400
+        assert response.status_code == 422
 
     def test_soc_stock_missing_both_parameters(self):
         """Test that missing both latitude and longitude returns 422."""
