@@ -1,5 +1,7 @@
 # SOC API
 
+A REST API for querying Soil Organic Carbon (SOC) data from GeoTIFF raster files. Provides coordinate-based queries and statistical analysis endpoints.
+
 ## Getting Started
 
 ### Quick Start
