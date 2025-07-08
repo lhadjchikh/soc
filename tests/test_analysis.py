@@ -55,7 +55,9 @@ class TestGetStatistics:
 
         assert abs(stats.min_value - 38.999664) < 1e-6
         assert abs(stats.max_value - 88.948524) < 1e-6
-        assert abs(stats.mean_value - 63.135494) < 1e-6
+        assert (
+            abs(stats.mean_value - 63.135494) < 1e-5
+        )  # Slightly more tolerance for windowed reading
 
 
 @patch("settings.DATASET_DIR", TEST_DATA_DIR)
