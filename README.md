@@ -4,25 +4,39 @@
 
 ### Quick Start
 
-1. Place your GeoTIFF files in the `data/` directory:
+1. **Install dependencies**:
 
-```bash
-cp your-raster.tif data/
-```
+   ```bash
+   poetry install
+   ```
 
-2. Start the server:
+2. **Place your GeoTIFF files in the `data/` directory**:
 
-```bash
-poetry run uvicorn app:app
-```
+   ```bash
+   cp your-raster.tif data/
+   ```
 
-3. Query the endpoints:
+   For example:
 
-```bash
-curl "http://localhost:8000/soc-stock?lat=41.94&lon=-97.90"
+   ```bash
+   cp tests/test_data/nebraska_30m_soc.tif data/
+   ```
 
-curl "http://localhost:8000/stats"
-```
+3. **Start the server**:
+
+   ```bash
+   poetry run uvicorn app:app
+   ```
+
+   The API will be available at `http://localhost:8000`
+
+4. **Query the endpoints**:
+
+   ```bash
+   curl "http://localhost:8000/soc-stock?lat=41.94&lon=-97.90"
+
+   curl "http://localhost:8000/stats"
+   ```
 
 ### Running Tests
 
