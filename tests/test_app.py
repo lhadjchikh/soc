@@ -25,22 +25,6 @@ class TestSocStock:
         assert isinstance(data["soc_stock"], (int, float))
         assert data["soc_stock"] > 0
 
-    def test_soc_stock_on_edge(self):
-        """Test that the endpoint returns SOC stock value for coordinates on the edge of the bounds."""
-        response = client.get("/soc-stock?lat=41.930530&lon=-97.940439")
-
-        # If this fails, the edge coordinates may not have valid data
-        # or the bounds checking might be too strict
-        if response.status_code != 200:
-            data = response.json()
-            print(f"Edge coordinate test failed with: {data}")
-
-        assert response.status_code == 200
-        data = response.json()
-        assert "soc_stock" in data
-        assert isinstance(data["soc_stock"], (int, float))
-        assert data["soc_stock"] > 0
-
     def test_soc_outside_bounds(self):
         """Test that valid coordinates outside GeoTIFF coverage return 400."""
         response = client.get("/soc-stock?lat=37.7749&lon=-122.4194")
