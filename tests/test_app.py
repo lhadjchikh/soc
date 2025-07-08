@@ -1,5 +1,7 @@
 from fastapi.testclient import TestClient
+from unittest.mock import patch
 from app import app
+from settings import TEST_DATA_DIR
 
 # Test file: nebraska_30m_soc.tif
 # Bounds:
@@ -8,10 +10,10 @@ from app import app
 #   South: 41.930530
 #   North: 41.989047
 
-
 client = TestClient(app)
 
 
+@patch("settings.DATASET_DIR", TEST_DATA_DIR)
 class TestSocStock:
     """Tests for the /soc-stock endpoint."""
 
@@ -84,6 +86,7 @@ class TestSocStock:
         assert response.status_code == 422
 
 
+@patch("settings.DATASET_DIR", TEST_DATA_DIR)
 class TestStats:
     """Tests for the /stats endpoint."""
 

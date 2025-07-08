@@ -1,9 +1,54 @@
 """Analysis module for raster data operations."""
 
 import rasterio
+import numpy as np
+from pathlib import Path
+from functools import lru_cache
 from rasterio.warp import transform
 
 from exceptions import OutOfBoundsError
+from models import SummaryStatistics
+from settings import DATASET_DIR
+
+
+@lru_cache(maxsize=1)
+def get_statistics(directory: str = DATASET_DIR, band: int = 1) -> SummaryStatistics:
+    """
+    Calculate statistics for all GeoTIFF files in the dataset directory.
+
+    Args:
+        dataset_dir: Directory containing GeoTIFF files (default: DATASET_DIR from settings)
+        band: Band number to read from (default: 1)
+
+    Returns:
+        SummaryStatistics with min, max, and mean values across all files
+    """
+    tiff_files = list(Path(directory).rglob("*.tif")) + list(
+        Path(directory).rglob("*.tiff")
+    )
+
+    if not tiff_files:
+        raise ValueError(f"No GeoTIFF files found in directory: {directory}")
+
+    all_valid_data = []
+
+    for filepath in tiff_files:
+        with rasterio.open(filepath) as src:
+            data = src.read(band)
+            valid_data = data[~np.isnan(data)]  # remove NaN and nodata values
+            if len(valid_data) > 0:
+                all_valid_data.extend(valid_data.flatten())
+
+    if len(all_valid_data) == 0:
+        raise ValueError("No valid data found in any GeoTIFF files")
+
+    all_valid_data = np.array(all_valid_data)
+
+    return SummaryStatistics(
+        min_value=float(np.min(all_valid_data)),
+        max_value=float(np.max(all_valid_data)),
+        mean_value=float(np.mean(all_valid_data)),
+    )
 
 
 def get_value_at_coordinates(
