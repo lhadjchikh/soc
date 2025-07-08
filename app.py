@@ -25,6 +25,8 @@ async def get_soc_stock(
 ):
     """Get SOC stock value at given WGS84 coordinates."""
     try:
+        # FIXME: We're using the example data as a hard-coded dataset for now.
+        # In future we, could use a STAC API request to find the tile we need.
         soc_value = get_value_at_coordinates(lon, lat, "data/nebraska_30m_soc.tif")
 
         if soc_value in NODATA or np.isnan(soc_value):

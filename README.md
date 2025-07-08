@@ -24,6 +24,8 @@ A REST API for querying Soil Organic Carbon (SOC) data from GeoTIFF raster files
    cp tests/test_data/nebraska_30m_soc.tif data/
    ```
 
+   > NOTE: For now, you MUST copy the `nebraska_30m_soc.tif` example file into the `data` directory to use the `/soc-stock` endpoint. This file is currently hardcoded as the dataset for this endpoint.
+
 3. **Start the server**:
 
    ```bash
